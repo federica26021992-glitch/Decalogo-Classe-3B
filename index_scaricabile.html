@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Decalogo Anti-Bullismo</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: linear-gradient(135deg, #eaf3de 0%, #e6f1fb 50%, #eeedfe 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; color: #1f1f1f; }
+    .card { width: 100%; max-width: 900px; background: #fff; border-radius: 22px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); overflow: hidden; border: 1px solid #e8e8e8; }
+    .header { background: linear-gradient(135deg, #1d9e75 0%, #27c48f 100%); color: white; padding: 28px 30px; }
+    .header h1 { margin: 0 0 8px 0; font-size: 30px; line-height: 1.1; }
+    .header p { margin: 0; opacity: 0.95; font-size: 16px; }
+    .content { padding: 30px; }
+    .intro { font-size: 18px; line-height: 1.7; margin: 0 0 24px 0; color: #444; }
+    .box { border: 2px solid #dfe9dd; background: #f8fbf6; border-radius: 16px; padding: 18px 20px; margin-bottom: 24px; }
+    .box strong { color: #1d9e75; }
+    .rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin-top: 18px; }
+    .rule { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; border: 1px solid #ececec; background: #fff; }
+    .icon { font-size: 24px; line-height: 1; min-width: 28px; }
+    .rule p { margin: 0; line-height: 1.5; font-size: 15px; }
+    .section-title { margin: 28px 0 14px 0; font-size: 22px; color: #1d9e75; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+    .btn { display: inline-block; padding: 12px 20px; border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 15px; transition: transform .15s ease, opacity .15s ease; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: #1d9e75; color: white; }
+    .btn-secondary { background: #e6f1fb; color: #185fa5; }
+    .footer { padding: 18px 30px 28px 30px; color: #777; font-size: 13px; border-top: 1px solid #f0f0f0; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    .vote-counter { background: linear-gradient(135deg,#EAF3DE,#f2fae8); border: 2px solid #1D9E75; border-radius: 14px; padding: 0.75rem 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+    .vc-num { font-size: 28px; font-weight: 700; color: #1D9E75; min-width: 30px; }
+    .vc-text { font-size: 13px; color: #3B6D11; line-height: 1.4; }
+    .vote-dots { display: flex; gap: 6px; }
+    .vote-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #1D9E75; background: #fff; }
+    .vote-dot.filled { background: #1D9E75; }
+    .regola-item { display: flex; align-items: center; gap: 12px; padding: 0.9rem 1rem; border-radius: 14px; border: 2px solid #eee; background: #fff; margin-bottom: 10px; cursor: pointer; }
+    .regola-item.voted-1 { border-color: #1D9E75; background: linear-gradient(135deg,#EAF3DE,#f2fae8); }
+    .regola-item.voted-2 { border-color: #378ADD; background: linear-gradient(135deg,#E6F1FB,#eef6ff); }
+    .regola-item.voted-3 { border-color: #EF9F27; background: linear-gradient(135deg,#FAEEDA,#fff8ec); }
+    .regola-icon { font-size: 26px; width: 38px; text-align: center; flex-shrink: 0; }
+    .regola-text { flex: 1; font-size: 14px; color: #333; font-weight: 500; line-height: 1.4; }
+    .regola-vote-badge { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 700; flex-shrink: 0; border: 2px solid #eee; color: #bbb; background: #f5f5f5; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 13px; color: #555; }
+    .bar-label { min-width: 200px; font-size: 12px; }
+    .bar-track { flex: 1; height: 14px; background: #eee; border-radius: 7px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 7px; }
+    .bar-val { min-width: 30px; text-align: right; font-weight: 600; font-size: 12px; }
+    .poster { border-radius: 20px; background: linear-gradient(160deg,#EAF3DE 0%,#e6f1fb 50%,#eeedfe 100%); border: 3px solid #1D9E75; padding: 1.5rem; margin: 1rem 0; }
+    .poster-title { text-align: center; font-size: 17px; font-weight: 700; color: #1D9E75; margin-bottom: 1rem; }
+    .poster-rule { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+    .poster-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 1px; }
+    .poster-rule-text { font-size: 13px; color: #333; line-height: 1.5; flex: 1; }
+    .highlight-box { border-radius: 14px; padding: 0.85rem 1rem; font-size: 13px; margin-top: 0.75rem; line-height: 1.6; border-left: 4px solid; }
+    .hl-green { background: #EAF3DE; border-color: #639922; color: #3B6D11; }
+    .hl-blue { background: #E6F1FB; border-color: #378ADD; color: #185FA5; }
+    .hl-orange { background: #FAEEDA; border-color: #EF9F27; color: #854F0B; }
+    @media (max-width: 600px) { .header h1 { font-size: 24px; } .content { padding: 22px; } .header { padding: 22px; } .bar-label { min-width: 140px; } }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <section class="header">
+      <h1>Decalogo Anti-Bullismo</h1>
+      <p>UDA “Empatia in Azione” — Classe 3B, Oriolo Romano — Fase 3</p>
+    </section>
+    <section class="content">
+      <div id="s-voto" class="screen active">
+        <div class="scene-title">Come ha fatto la classe 3B</div>
+        <h2>Vota le 3 regole più importanti</h2>
+        <p style="font-size:14px;margin-bottom:1rem">La classe 3B ha scelto le proprie regole anti-bullismo tramite <strong>votazione democratica su Google Moduli</strong>. Ora tocca a te: seleziona le 3 regole che senti più importanti.</p>
+        <div class="vote-counter">
+          <div class="vote-dots"><div class="vote-dot" id="dot-0"></div><div class="vote-dot" id="dot-1"></div><div class="vote-dot" id="dot-2"></div></div>
+          <div class="vc-text" id="vc-text">Seleziona 3 regole toccando quelle che senti più importanti</div>
+        </div>
+        <div id="regole-list"></div>
+        <div id="voto-error" style="display:none;background:#FAEEDA;border-left:4px solid #EF9F27;padding:10px 12px;border-radius:10px;margin-top:8px">Seleziona esattamente 3 regole per continuare.</div>
+        <div class="buttons"><a href="#" class="btn btn-primary" onclick="submitVoto();return false;">Conferma i miei voti</a></div>
+      </div>
+      <div id="s-risultati" class="screen">
+        <div class="scene-title">I tuoi voti vs la classe 3B</div>
+        <h2 style="margin-bottom:0.25rem">Ecco cosa ha scelto la classe</h2>
+        <p style="font-size:13px;color:#777;margin-bottom:1rem">Confronta le tue scelte con quelle della classe 3B. Le 3 regole più votate dagli alunni sono diventate il cuore del Decalogo affisso in corridoio.</p>
+        <div class="scene-title" style="margin-bottom:0.5rem">Le tue 3 scelte</div>
+        <div id="mie-scelte" style="margin-bottom:1rem"></div>
+        <div class="scene-title" style="margin-bottom:0.5rem">Classifica della classe 3B Google Moduli</div>
+        <div id="classifica-bars" style="margin-bottom:1rem"></div>
+        <div class="poster">
+          <div class="poster-title">Il nostro patto contro il bullismo</div>
+          <div class="poster-rule"><div class="poster-num" style="background:#1D9E75">1</div><div class="poster-rule-text">Pensa a come si sente l’altro prima di agire</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#378ADD">2</div><div class="poster-rule-text">Includi chi è solo o escluso</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#EF9F27">3</div><div class="poster-rule-text">Parla con un adulto se vedi bullismo</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#E24B4A">4</div><div class="poster-rule-text">Chiedi scusa se sbagli</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#7F77DD">5</div><div class="poster-rule-text">Difendi chi viene trattato male</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#1D9E75">6</div><div class="poster-rule-text">Rispetta le differenze di tutti</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#378ADD">7</div><div class="poster-rule-text">Usa le parole, non le mani né le offese</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#EF9F27">8</div><div class="poster-rule-text">Ascolta prima di giudicare</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#E24B4A">9</div><div class="poster-rule-text">Non ridere se un compagno cade o sbaglia</div></div>
+          <div class="poster-rule"><div class="poster-num" style="background:#7F77DD">10</div><div class="poster-rule-text">Non condividere foto o video per deridere</div></div>
+        </div>
+        <div class="highlight-box hl-green"><strong>100% di partecipazione</strong> alla votazione su Google Moduli. Il Decalogo è stato stampato su Canva e affisso in aula e in corridoio come patto collettivo della 3B.</div>
+        <div class="highlight-box hl-blue">In ottica ICF, gli alunni hanno co-costruito e reso pubbliche regole comuni, assumendole come riferimento per le relazioni quotidiane: la capacità morale si traduce in una <strong>performance di partecipazione sociale</strong> ICF d760.</div>
+        <div class="buttons">
+          <a href="#" class="btn btn-secondary" onclick="go('s-voto');return false;">Indietro</a>
+          <a href="#" class="btn btn-primary" onclick="resetVoto();return false;">Ricomincia</a>
+        </div>
+      </div>
+    </section>
+    <section class="footer">Federica Fiaschetti — TFA Sostegno X Ciclo, a.a. 2024/2025</section>
+  </main>
+  <script>
+    const regole = [
+      {icon:'🙏', testo:'Chiedi scusa se sbagli', voti3B:17},
+      {icon:'😂', testo:'Non ridere se un compagno cade o sbaglia', voti3B:15},
+      {icon:'🤝', testo:'Includi chi è solo o escluso', voti3B:21},
+      {icon:'👤', testo:'Parla con un adulto se vedi bullismo', voti3B:19},
+      {icon:'⭐', testo:'Rispetta le differenze di tutti', voti3B:16},
+      {icon:'👂', testo:'Ascolta prima di giudicare', voti3B:14},
+      {icon:'🗣️', testo:'Usa le parole, non le mani né le offese', voti3B:18},
+      {icon:'📵', testo:'Non condividere foto o video per deridere', voti3B:13},
+      {icon:'🛡️', testo:'Difendi chi viene trattato male', voti3B:16},
+      {icon:'💭', testo:'Pensa a come si sente l’altro prima di agire', voti3B:23}
+    ];
+    let votes = [];
+    const colors = ['voted-1','voted-2','voted-3'];
+    const colorHex = ['1D9E75','378ADD','EF9F27'];
+    function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
+    function updateCounter(){
+      const n=votes.length;
+      for(let i=0;i<3;i++) document.getElementById('dot-'+i).className='vote-dot'+(i<n?' filled':'');
+      const msgs=['Seleziona 3 regole toccando quelle che senti più importanti','Ottimo! Ancora 2 regole da scegliere','Bene! Ancora 1 regola da scegliere','Perfetto! Hai scelto le tue 3 regole. Premi Conferma!'];
+      document.getElementById('vc-text').textContent=msgs[n];
+    }
+    function toggleVoto(idx){
+      const pos=votes.indexOf(idx);
+      const el=document.getElementById('r'+idx);
+      if(pos!==-1){
+        votes.splice(pos,1);
+        el.className='regola-item';
+        el.querySelector('.regola-vote-badge').textContent='';
+        votes.forEach((v,i)=>{document.getElementById('r'+v).className='regola-item '+colors[i];document.getElementById('badge-'+v).textContent=i+1;});
+      } else {
+        if(votes.length===3) return;
+        votes.push(idx);
+        el.className='regola-item '+colors[votes.length-1];
+        el.querySelector('.regola-vote-badge').textContent=votes.length;
+      }
+      updateCounter();
+      document.getElementById('voto-error').style.display='none';
+    }
+    function submitVoto(){
+      if(votes.length!==3){document.getElementById('voto-error').style.display='block';return;}
+      const mc=document.getElementById('mie-scelte'); mc.innerHTML='';
+      votes.forEach((v,i)=>{const r=regole[v]; mc.innerHTML += `<div style="display:flex;align-items:center;gap:10px;padding:0.7rem 0.9rem;border-radius:12px;background:${i===0?'#EAF3DE':i===1?'#E6F1FB':'#FAEEDA'};border:2px solid #${colorHex[i]};margin-bottom:8px"><span style="font-size:22px">${r.icon}</span><span style="font-size:13px;font-weight:600;color:#333;flex:1">${r.testo}</span><span style="font-size:12px;font-weight:700;color:#${colorHex[i]}">Tua scelta ${i+1}</span></div>`;});
+      const sorted=regole.map((r,i)=>({...r, idx:i})).sort((a,b)=>b.voti3B-a.voti3B);
+      const maxVoti=sorted[0].voti3B;
+      const bars=document.getElementById('classifica-bars'); bars.innerHTML='';
+      sorted.forEach(r=>{const pct=Math.round(r.voti3B/maxVoti*100); const isVoted=votes.includes(r.idx); bars.innerHTML += `<div class="bar-row"><span class="bar-label" style="font-weight:${isVoted?700:400};color:${isVoted?'#1D9E75':'#555'}">${r.icon} ${r.testo}</span><div class="bar-track"><div class="bar-fill" style="background:${isVoted?'#1D9E75':'#9FE1CB'};width:${pct}%"></div></div><span class="bar-val" style="color:${isVoted?'#1D9E75':'#888'}">${r.voti3B}</span></div>`;});
+      go('s-risultati');
+    }
+    function resetVoto(){votes=[]; for(let i=0;i<regole.length;i++){document.getElementById('r'+i).className='regola-item'; document.getElementById('badge-'+i).textContent='';} updateCounter(); go('s-voto');}
+    function init(){const list=document.getElementById('regole-list'); list.innerHTML = regole.map((r,i)=>`<div class="regola-item" id="r${i}" onclick="toggleVoto(${i})"><div class="regola-icon">${r.icon}</div><div class="regola-text">${r.testo}</div><div class="regola-vote-badge" id="badge-${i}"></div></div>`).join(''); updateCounter();}
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
